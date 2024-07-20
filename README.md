@@ -8,11 +8,10 @@ Profiles are set up by creating a text file with paths to two directories separa
 
 Loading a profile with a text file such as
 
-``
-C:\mods;C:\Game
 
+`C:\mods;C:\Game
 C:\saves;HOMEPATH\My Documents\My Games
-``
+`
 
 will make the example game executable think that whatever is in the mods folder is actually under the Game folder and will the game will save info to "C:\saves" instead of the default folder under My Documents.
 
