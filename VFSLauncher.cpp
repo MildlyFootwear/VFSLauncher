@@ -6,21 +6,67 @@
 #include <memory>
 #include <stdio.h>
 #include <string.h>
-
+#include <stdlib.h>
+#include <regex>
 #include "usvfs.h"
 
-wchar_t* ToLPCWSTR(const char* charArray)
+bool debug = true;
+bool debugParse = false;
+bool debugEnv   = false;
+
+
+char* CheckForEnv(char* charArray, const char* charArray2)
 {
+    int loc = 0;
+    char* finalchar = strdup(charArray);
+
+    while (charArray[loc] == charArray2[loc]) {
+        loc++;
+    }
+
+    if (charArray2[loc] == NULL && getenv(charArray2) != NULL) {
+        char env[60];
+        sprintf(env, getenv(charArray2));
+        char sep           = '\\';
+        char* charArrayAlt = strdup(charArray);
+        char* trimmed      = strchr(charArrayAlt, sep);
+        sprintf(finalchar, "%s%s\%s", getenv("HOMEDRIVE"), env, trimmed);
+
+    } else {
+        sprintf(finalchar, charArray);
+    }
+    if (debugEnv)
+        printf("returning %s for %s with env check %s\n", finalchar, charArray,
+               charArray2);
+
+    return finalchar;
+
+}
+
+wchar_t* ToPath(const char* charArray)
+{
+
+    if (debugParse) 
+        printf("Parsing %s\n", charArray);
+    char pathinit[255] = "bleh";
+    char* path = pathinit;
+    path = CheckForEnv(strdup(charArray), "HOMEPATH");
+
+
+    if (debugParse)
+        printf("Parsing product %s\n", path);
+
     wchar_t* wString = new wchar_t[4096];
-    MultiByteToWideChar(CP_ACP, 0, charArray, -1, wString, 4096);
+    MultiByteToWideChar(CP_ACP, 0, path, -1, wString, 4096);
     return wString;
+
 }
 
 int main(int argc, char* argv[])
 {
     bool profilevalid = false;
     bool exevalid     = false;
-    bool debug        = false;
+
     if (argc > 1) {
         char sep = '.';
         char fullpath[255];
@@ -82,6 +128,7 @@ int main(int argc, char* argv[])
     }
 
 
+
     if (profilevalid && exevalid)
     {
         auto parameters = usvfsCreateParameters();
@@ -107,11 +154,14 @@ int main(int argc, char* argv[])
             const char* sep = ";";
             char* pntsource = strtok(buffer, sep);
             char* pntdest       = strtok(NULL, sep);
-            LPCWSTR source    = ToLPCWSTR(pntsource);
-            LPCWSTR destination = ToLPCWSTR(pntdest);
+
+            LPWSTR source      = ToPath(pntsource);
+            LPWSTR destination = ToPath(pntdest);
+
             if (destination != NULL) {
                 if (debug)
-                    printf("%s to %s", pntsource, pntdest);
+                    wprintf(L"Linkinkg %ls and %ls", source, destination);
+
                 usvfsVirtualLinkDirectoryStatic(source, destination,LINKFLAG_RECURSIVE);
                 usvfsVirtualLinkDirectoryStatic(destination, source, LINKFLAG_MONITORCHANGES); 
                 usvfsVirtualLinkDirectoryStatic(source, destination, LINKFLAG_CREATETARGET);
@@ -136,7 +186,7 @@ int main(int argc, char* argv[])
             PROCESS_INFORMATION pi{0};
             WCHAR command[] = L"--skip-launcher";
 
-            if (usvfsCreateProcessHooked(ToLPCWSTR(argv[2]), command, nullptr, nullptr,
+            if (usvfsCreateProcessHooked(ToPath(argv[2]), command, nullptr, nullptr,
                                                                      TRUE, 0, 0, nullptr, &si, &pi)) {
                 WaitForSingleObject(pi.hProcess, INFINITE);
 
