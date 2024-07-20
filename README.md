@@ -10,6 +10,7 @@ Loading a profile with a text file such as
 
 ``
 C:\mods;C:\Game
+
 C:\saves;HOMEPATH\My Documents\My Games
 ``
 
