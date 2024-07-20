@@ -15,7 +15,7 @@ C:\saves;HOMEPATH\My Documents\My Games
 ```
 
 
-will make the example game executable think that whatever is in the mods folder is actually under the Game folder and will the game will save info to "C:\saves" instead of the default folder under My Documents.
+will make the example game executable think that whatever is in the mods folder is actually under the Game folder and the game will save info to "C:\saves" instead of the default folder under My Documents.
 
 Launch with command arguments to load a profile and the executable you wish to hook into it.
 
