@@ -9,8 +9,8 @@ Profiles are set up by creating a text file with paths to two directories separa
 Loading a profile with a text file such as
 
 
-```C:\mods;C:\Game
-
+```
+C:\mods;C:\Game
 C:\saves;HOMEPATH\My Documents\My Games
 ```
 
