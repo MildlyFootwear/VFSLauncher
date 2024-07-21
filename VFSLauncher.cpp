@@ -64,6 +64,10 @@ wchar_t* ToPath(const char* charArray)
 
 int main(int argc, char* argv[])
 {
+
+    if (debug == false)
+    ::ShowWindow(::GetConsoleWindow(), SW_HIDE); 
+
     bool profilevalid = false;
     bool exevalid     = false;
 
