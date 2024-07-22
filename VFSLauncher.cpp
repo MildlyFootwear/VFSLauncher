@@ -10,7 +10,7 @@
 #include <regex>
 #include "usvfs.h"
 
-bool debug = false;
+bool debug = true;
 bool debugParse = false;
 bool debugEnv   = false;
 
@@ -170,14 +170,12 @@ int main(int argc, char* argv[])
         }
         fclose(profile); 
 
-        if (debug)
-        {
             char tree[4096];
             size_t fuck      = 4096;
             size_t* treesize = &fuck;
             usvfsCreateVFSDump(tree, treesize);
             printf(tree);
-        }
+        
             
 
         // spawn process
@@ -186,8 +184,7 @@ int main(int argc, char* argv[])
             si.cb = sizeof(si);
             PROCESS_INFORMATION pi{0};
 
-            if (usvfsCreateProcessHooked(ToW(argv[2]), command, nullptr, nullptr,
-                                                                     TRUE, 0, 0, nullptr, &si, &pi)) {
+            if (usvfsCreateProcessHooked(ToW(argv[2]), command, nullptr, nullptr, TRUE, 0, 0, nullptr, &si, &pi)) {
                 WaitForSingleObject(pi.hProcess, INFINITE);
 
                 DWORD exit = 99;
@@ -206,16 +203,20 @@ int main(int argc, char* argv[])
         // free stuff
         usvfsDisconnectVFS();
         usvfsFreeParameters(parameters);
-        printf("\nVFS closed.\n");
+        
+            printf("\nVFS ended.\n");
+        
         
     } else {
-        error == true;
+        error = true;
     }
+
     if (error || debug) {
-        ::ShowWindow(::GetConsoleWindow(), SW_SHOW); 
+        ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
         printf("\n");
         system("pause");
     }
+        
         
         
 }
