@@ -10,7 +10,7 @@
 #include <regex>
 #include "usvfs.h"
 
-bool debug = true;
+bool debug = false;
 bool debugParse = false;
 bool debugEnv   = false;
 
@@ -60,6 +60,7 @@ int main(int argc, char* argv[])
 
     bool profilevalid = false;
     bool exevalid     = false;
+    bool error        = false;
     WCHAR * command   = new WCHAR[4096];
 
     if (argc > 1) {
@@ -192,22 +193,28 @@ int main(int argc, char* argv[])
                 DWORD exit = 99;
                 if (!GetExitCodeProcess(pi.hProcess, &exit)) {
                     std::cerr << "process failed\n";
+                    error = true;
                 }
 
                 CloseHandle(pi.hProcess);
                 CloseHandle(pi.hThread);
             } else {
                 std::cerr << "create process failed\n";
+                error = true;
             }
         }
         // free stuff
         usvfsDisconnectVFS();
         usvfsFreeParameters(parameters);
-        printf("\n%s ended.", argv[2]);
-        Sleep(5000);
+        printf("\nVFS closed.\n");
+        
     } else {
+        error == true;
+    }
+    if (error || debug) {
         ::ShowWindow(::GetConsoleWindow(), SW_SHOW); 
-        Sleep(10000);
+        printf("\n");
+        system("pause");
     }
         
         
