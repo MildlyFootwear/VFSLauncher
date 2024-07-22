@@ -14,7 +14,7 @@ bool debug = true;
 bool debugParse = false;
 bool debugEnv   = false;
 
-
+/*
 char* CheckForEnv(char* charArray, const char* charArray2)
 {
     int loc = 0;
@@ -42,22 +42,12 @@ char* CheckForEnv(char* charArray, const char* charArray2)
     return finalchar;
 
 }
-
-wchar_t* ToPath(const char* charArray)
+*/
+wchar_t* ToW(const char* charArray)
 {
 
-    if (debugParse) 
-        printf("Parsing %s\n", charArray);
-    char pathinit[255] = "bleh";
-    char* path = pathinit;
-    path = CheckForEnv(strdup(charArray), "HOMEPATH");
-
-
-    if (debugParse)
-        printf("Parsing product %s\n", path);
-
     wchar_t* wString = new wchar_t[4096];
-    MultiByteToWideChar(CP_ACP, 0, path, -1, wString, 4096);
+    MultiByteToWideChar(CP_ACP, 0, charArray, -1, wString, 4096);
     return wString;
 
 }
@@ -70,6 +60,7 @@ int main(int argc, char* argv[])
 
     bool profilevalid = false;
     bool exevalid     = false;
+    WCHAR * command   = new WCHAR[4096];
 
     if (argc > 1) {
         char sep = '.';
@@ -103,6 +94,7 @@ int main(int argc, char* argv[])
         char fullpath[255];
         sprintf(fullpath, argv[2]);
         char* extension = strrchr(argv[2], sep) + 1;
+        
         FILE* file;
         if (extension != nullptr) {
 
@@ -126,9 +118,13 @@ int main(int argc, char* argv[])
         printf("Using executable %s.\n", argv[2]);
     }
     if (argc > 3) {
-
-        if (strcmp(argv[3], "debug") == 0)
-            debug = true;
+        FILE* argsfile;
+        argsfile = fopen(argv[3], "r");
+        int const bufferLength = 510;
+        char buffer[bufferLength];
+        fgets(buffer, bufferLength, argsfile);
+        command = ToW(buffer);
+        wprintf(L"Passing commands %ls\n", command);
     }
 
 
@@ -159,12 +155,12 @@ int main(int argc, char* argv[])
             char* pntsource = strtok(buffer, sep);
             char* pntdest       = strtok(NULL, sep);
 
-            LPWSTR source      = ToPath(pntsource);
-            LPWSTR destination = ToPath(pntdest);
+            LPWSTR source      = ToW(pntsource);
+            LPWSTR destination = ToW(pntdest);
 
             if (destination != NULL) {
                 if (debug)
-                    wprintf(L"Linkinkg %ls and %ls", source, destination);
+                    wprintf(L"Linking %ls and %ls", source, destination);
 
                 usvfsVirtualLinkDirectoryStatic(source, destination,LINKFLAG_RECURSIVE);
                 usvfsVirtualLinkDirectoryStatic(destination, source, LINKFLAG_MONITORCHANGES); 
@@ -188,9 +184,8 @@ int main(int argc, char* argv[])
             STARTUPINFOW si{0};
             si.cb = sizeof(si);
             PROCESS_INFORMATION pi{0};
-            WCHAR command[] = L"--skip-launcher";
 
-            if (usvfsCreateProcessHooked(ToPath(argv[2]), command, nullptr, nullptr,
+            if (usvfsCreateProcessHooked(ToW(argv[2]), command, nullptr, nullptr,
                                                                      TRUE, 0, 0, nullptr, &si, &pi)) {
                 WaitForSingleObject(pi.hProcess, INFINITE);
 
@@ -209,8 +204,9 @@ int main(int argc, char* argv[])
         usvfsDisconnectVFS();
         usvfsFreeParameters(parameters);
         printf("\n%s ended.", argv[2]);
-        Sleep(2000);
+        Sleep(5000);
     } else {
+        ::ShowWindow(::GetConsoleWindow(), SW_SHOW); 
         Sleep(10000);
     }
         

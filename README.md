@@ -11,7 +11,7 @@ Loading a profile with a text file such as
 
 ```
 C:\mods;C:\Game
-C:\saves;HOMEPATH\My Documents\My Games
+C:\saves;C:\Users\ExampleUser\My Documents\My Games
 ```
 
 
@@ -19,7 +19,7 @@ will make the example game executable think that whatever is in the mods folder 
 
 Launch with command arguments to load a profile and the executable you wish to hook into it.
 
-For example: VFSLauncher.exe "Profiles\Profile1.txt" "C:\Windows\system32\cmd.exe" will launch the command prompt with the virtual file system specified in the Profiles folder present in the executable's directory.
+For example: VFSLauncher.exe "Profiles\Profile1.txt" "C:\Windows\system32\cmd.exe" will launch the command prompt with the virtual file system specified in the Profiles folder present in the executable's directory. You can create a text file and put the path to it as the 3rd argument to pass arguments on to the launched executable as if they were just ammended to a typical Windows shortcut.
 
 ## Building
 
