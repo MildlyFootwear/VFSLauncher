@@ -10,7 +10,7 @@
 #include <regex>
 #include "usvfs.h"
 
-bool debug = false;
+bool debug = true;
 bool debugParse = false;
 bool debugEnv   = false;
 
@@ -54,9 +54,6 @@ wchar_t* ToW(const char* charArray)
 
 int main(int argc, char* argv[])
 {
-
-    if (debug == false)
-    ::ShowWindow(::GetConsoleWindow(), SW_HIDE); 
 
     bool profilevalid = false;
     bool exevalid     = false;
@@ -132,14 +129,16 @@ int main(int argc, char* argv[])
     {
         FILE* argsfile;
         argsfile               = fopen(argv[4], "r");
-        int const bufferLength = 510;
-        char buffer[bufferLength];
-        fgets(buffer, bufferLength, argsfile);
-        command = ToW(buffer);
-        wprintf(L"Passing commands %ls\n", command);
+        if (argsfile)
+        {
+
+            int const bufferLength = 510;
+            char buffer[bufferLength];
+            fgets(buffer, bufferLength, argsfile);
+            command = ToW(buffer);
+            wprintf(L"Passing commands %ls\n", command);
+        }
     }
-
-
 
     if (profilevalid && exevalid && hasname)
     {
@@ -155,11 +154,11 @@ int main(int argc, char* argv[])
         usvfsInitLogging(false);
         usvfsCreateVFS(parameters);
 
-            usvfsDisconnectVFS();
-            usvfsFreeParameters(parameters);
+        usvfsDisconnectVFS();
+        usvfsFreeParameters(parameters);
 
         parameters = usvfsCreateParameters();
-        printf("instance name %s", inname);
+        printf("instance name %s\n", inname);
         usvfsSetInstanceName(parameters, inname);
         usvfsSetDebugMode(parameters, false);
         usvfsSetLogLevel(parameters, LogLevel::Warning);
@@ -178,6 +177,8 @@ int main(int argc, char* argv[])
         profile = fopen(argv[1], "r");
         while (fgets(buffer, bufferLength, profile)) {
 
+            printf("\n\nbuffer %s\n", buffer);
+
             const char* sep = ";";
             char* pntsource = strtok(buffer, sep);
             char* pntdest       = strtok(NULL, sep);
@@ -185,7 +186,7 @@ int main(int argc, char* argv[])
             LPWSTR source      = ToW(pntsource);
             LPWSTR destination = ToW(pntdest);
 
-            if (destination != NULL) {
+            if (destination != NULL && source != NULL) {
                 if (debug)
                     wprintf(L"Linking %ls and %ls", source, destination);
 
