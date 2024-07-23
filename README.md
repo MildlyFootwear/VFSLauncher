@@ -1,7 +1,7 @@
 # VFSLauncher
 
 ## Description
-Command argument tool for setting up a virtual file system using a text file to store the structure of it and launching a desired executable hooked to it.  
+Command argument tool for setting up a virtual file system using a text file to store the structure of it and launching a desired executable hooked to it.    
 https://github.com/ModOrganizer2/usvfs is used to construct the VFS.
 
 ## Function and Use
