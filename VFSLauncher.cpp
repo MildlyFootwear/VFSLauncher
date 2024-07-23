@@ -139,6 +139,14 @@ int main(int argc, char* argv[])
             wprintf(L"Passing commands %ls\n", command);
         }
     }
+    if (argc > 5)
+    {
+        ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
+        debug = true;
+    }
+
+    if (debug == false)
+        ::ShowWindow(::GetConsoleWindow(), SW_HIDE); 
 
     if (profilevalid && exevalid && hasname)
     {
