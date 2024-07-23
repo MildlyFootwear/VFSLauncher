@@ -17,8 +17,7 @@ For example: VFSLauncher.exe "Profiles\Profile1.txt" "C:\Windows\system32\cmd.ex
 An example profile to pass as the first argument;
 
 ```
-C:\mods;C:\Game
-C:\saves;C:\Users\ExampleUser\My Documents\My Games
+C:\mods;C:\Game;C:\saves;C:\Users\ExampleUser\My Documents\My Games
 ```
 
 

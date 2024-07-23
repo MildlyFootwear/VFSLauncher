@@ -10,7 +10,7 @@
 #include <regex>
 #include "usvfs.h"
 
-bool debug = true;
+bool debug = false;
 bool debugParse = false;
 bool debugEnv   = false;
 
@@ -180,29 +180,36 @@ int main(int argc, char* argv[])
         // map stuff
 
         FILE* profile;
-        int const bufferLength = 4096;
+        int const bufferLength = 16384;
         char buffer[bufferLength];
         profile = fopen(argv[1], "r");
-        while (fgets(buffer, bufferLength, profile)) {
+        fgets(buffer, bufferLength, profile);
 
             printf("\n\nbuffer %s\n", buffer);
-
             const char* sep = ";";
             char* pntsource = strtok(buffer, sep);
-            char* pntdest       = strtok(NULL, sep);
+            while (pntsource != NULL)
+            {
+                char* pntdest = strtok(NULL, sep);
 
-            LPWSTR source      = ToW(pntsource);
-            LPWSTR destination = ToW(pntdest);
+                LPWSTR source      = ToW(pntsource);
+                LPWSTR destination = ToW(pntdest);
 
-            if (destination != NULL && source != NULL) {
-                if (debug)
-                    wprintf(L"Linking %ls and %ls", source, destination);
+                if (destination != NULL && source != NULL) {
+                    if (debug)
+                        wprintf(L"Linking %ls and %ls\n", source, destination);
 
-                usvfsVirtualLinkDirectoryStatic(source, destination,LINKFLAG_RECURSIVE);
-                usvfsVirtualLinkDirectoryStatic(destination, source, LINKFLAG_MONITORCHANGES); 
-                usvfsVirtualLinkDirectoryStatic(source, destination, LINKFLAG_CREATETARGET);
+                    usvfsVirtualLinkDirectoryStatic(source, destination,
+                                                    LINKFLAG_RECURSIVE);
+                    usvfsVirtualLinkDirectoryStatic(destination, source,
+                                                    LINKFLAG_MONITORCHANGES);
+                    usvfsVirtualLinkDirectoryStatic(source, destination,
+                                                    LINKFLAG_CREATETARGET);
+                }
+                pntsource = strtok(NULL, sep);
             }
-        }
+            
+        
         fclose(profile); 
 
             char tree[4096];
