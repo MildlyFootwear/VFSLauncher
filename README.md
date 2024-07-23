@@ -22,6 +22,8 @@ C:\saves;C:\Users\ExampleUser\My Documents\My Games
 
 would make the launched executable think that whatever is in the mods folder is actually under the Game folder. If the executable were a game and tried to make a save in the directory most games will save to by default, it will instead be redirected to "C:\saves".
 
+Do note that when designing profiles, having a path end in either "/" or "\" will break most file operations the launched executable attempts.
+
 ## Building
 
 Built using Visual Studio 2022 and the Visual Studio 17 2022 Win64 CMake generator. You will likely need C++ packages installed into Visual Studio as well as the Windows 10 SDK if you want to build and use as is.
