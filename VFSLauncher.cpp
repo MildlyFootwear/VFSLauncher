@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
     {
         auto parameters = usvfsCreateParameters();
 
-        usvfsSetInstanceName(parameters, "instance");
+        usvfsSetInstanceName(parameters, "VFSInstance");
         usvfsSetDebugMode(parameters, false);
         usvfsSetLogLevel(parameters, LogLevel::Warning);
         usvfsSetCrashDumpType(parameters, CrashDumpsType::None);
