@@ -62,6 +62,7 @@ int main(int argc, char* argv[])
     bool exevalid     = false;
     bool error        = false;
     WCHAR * command   = new WCHAR[4096];
+    char* inname      = new char[256];
 
     if (argc > 1) {
         char sep = '.';
@@ -119,8 +120,12 @@ int main(int argc, char* argv[])
         printf("Using executable %s.\n", argv[2]);
     }
     if (argc > 3) {
+        inname = argv[3];
+    }
+    if (argc > 4)
+    {
         FILE* argsfile;
-        argsfile = fopen(argv[3], "r");
+        argsfile               = fopen(argv[4], "r");
         int const bufferLength = 510;
         char buffer[bufferLength];
         fgets(buffer, bufferLength, argsfile);
@@ -133,8 +138,8 @@ int main(int argc, char* argv[])
     if (profilevalid && exevalid)
     {
         auto parameters = usvfsCreateParameters();
-
-        usvfsSetInstanceName(parameters, "VFSInstance");
+        printf("instance name %s",inname);
+        usvfsSetInstanceName(parameters, inname);
         usvfsSetDebugMode(parameters, false);
         usvfsSetLogLevel(parameters, LogLevel::Warning);
         usvfsSetCrashDumpType(parameters, CrashDumpsType::None);
@@ -147,7 +152,7 @@ int main(int argc, char* argv[])
         // map stuff
 
         FILE* profile;
-        int const bufferLength = 510;
+        int const bufferLength = 4096;
         char buffer[bufferLength];
         profile = fopen(argv[1], "r");
         while (fgets(buffer, bufferLength, profile)) {
@@ -185,6 +190,10 @@ int main(int argc, char* argv[])
             PROCESS_INFORMATION pi{0};
 
             if (usvfsCreateProcessHooked(ToW(argv[2]), command, nullptr, nullptr, TRUE, 0, 0, nullptr, &si, &pi)) {
+
+
+                    
+
                 WaitForSingleObject(pi.hProcess, INFINITE);
 
                 DWORD exit = 99;

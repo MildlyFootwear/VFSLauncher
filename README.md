@@ -8,7 +8,7 @@ https://github.com/ModOrganizer2/usvfs is used to set up the VFS.
 ## Function and Use
 Profiles are set up by creating a text file with paths to two directories separated by a ";". The first one will be used to store created or modified files and will be "laid over" the second directory in the virtual filespace.
 
-Launch with arguments to load a text file that will determine the structure of the virtual file system, the executable you wish to hook into it, and a second text file containing the arguments you wish to pass to the executable.
+Launch with arguments to load a text file that will determine the structure of the virtual file system, the executable you wish to hook into it, a unique identifier for your VFS instance, and a second text file containing the arguments you wish to pass to the executable.
 
 For example: VFSLauncher.exe "Profiles\Profile1.txt" "C:\Windows\system32\cmd.exe" 
 
