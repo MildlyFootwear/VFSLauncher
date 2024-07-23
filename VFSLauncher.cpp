@@ -10,7 +10,7 @@
 #include <regex>
 #include "usvfs.h"
 
-bool debug = true;
+bool debug = false;
 bool debugParse = false;
 bool debugEnv   = false;
 
@@ -60,6 +60,7 @@ int main(int argc, char* argv[])
 
     bool profilevalid = false;
     bool exevalid     = false;
+    bool hasname         = false;
     bool error        = false;
     WCHAR * command   = new WCHAR[4096];
     char* inname      = new char[256];
@@ -121,6 +122,11 @@ int main(int argc, char* argv[])
     }
     if (argc > 3) {
         inname = argv[3];
+        hasname = true;
+    }
+    if (hasname == false)
+    {
+        printf("No instance name given.");
     }
     if (argc > 4)
     {
@@ -135,7 +141,7 @@ int main(int argc, char* argv[])
 
 
 
-    if (profilevalid && exevalid)
+    if (profilevalid && exevalid && hasname)
     {
         auto parameters = usvfsCreateParameters();
         printf("instance name %s",inname);
@@ -190,9 +196,6 @@ int main(int argc, char* argv[])
             PROCESS_INFORMATION pi{0};
 
             if (usvfsCreateProcessHooked(ToW(argv[2]), command, nullptr, nullptr, TRUE, 0, 0, nullptr, &si, &pi)) {
-
-
-                    
 
                 WaitForSingleObject(pi.hProcess, INFINITE);
 
