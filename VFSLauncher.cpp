@@ -250,7 +250,7 @@ int main(int argc, char* argv[])
     if (error || debug) {
         ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
         printf("\n");
-        system("pause");
+        Sleep(10000);
     }
         
         
