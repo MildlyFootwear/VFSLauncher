@@ -143,8 +143,8 @@ int main(int argc, char* argv[])
 
     if (profilevalid && exevalid && hasname)
     {
+
         auto parameters = usvfsCreateParameters();
-        printf("instance name %s",inname);
         usvfsSetInstanceName(parameters, inname);
         usvfsSetDebugMode(parameters, false);
         usvfsSetLogLevel(parameters, LogLevel::Warning);
@@ -153,7 +153,22 @@ int main(int argc, char* argv[])
         usvfsSetProcessDelay(parameters, 200);
 
         usvfsInitLogging(false);
-        auto instance = usvfsCreateVFS(parameters);
+        usvfsCreateVFS(parameters);
+
+            usvfsDisconnectVFS();
+            usvfsFreeParameters(parameters);
+
+        parameters = usvfsCreateParameters();
+        printf("instance name %s", inname);
+        usvfsSetInstanceName(parameters, inname);
+        usvfsSetDebugMode(parameters, false);
+        usvfsSetLogLevel(parameters, LogLevel::Warning);
+        usvfsSetCrashDumpType(parameters, CrashDumpsType::None);
+        usvfsSetCrashDumpPath(parameters, "");
+        usvfsSetProcessDelay(parameters, 200);
+
+        usvfsInitLogging(false);
+        usvfsCreateVFS(parameters);
 
         // map stuff
 
