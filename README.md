@@ -6,8 +6,13 @@ Command argument tool for setting up a virtual file system using a text file to 
 ## Function and Use
 Profiles are set up by creating a text file with paths to two directories separated by a ";". The first one will be used to store created or modified files and will be "laid over" the second directory in the virtual filespace.
 
-Loading a profile with a text file such as
+Launch with arguments to load a text file that will determine the structure of the virtual file system, the executable you wish to hook into it, and a second text file containing the arguments you wish to pass to the executable.
 
+For example: VFSLauncher.exe "Profiles\Profile1.txt" "C:\Windows\system32\cmd.exe" 
+
+...will launch the command prompt with the virtual file system specified in the Profiles folder present in the executable's directory.
+
+An example profile to pass as the first argument;
 
 ```
 C:\mods;C:\Game
@@ -15,11 +20,7 @@ C:\saves;C:\Users\ExampleUser\My Documents\My Games
 ```
 
 
-will make the example game executable think that whatever is in the mods folder is actually under the Game folder and the game will save info to "C:\saves" instead of the default folder under My Documents.
-
-Launch with command arguments to load a profile and the executable you wish to hook into it.
-
-For example: VFSLauncher.exe "Profiles\Profile1.txt" "C:\Windows\system32\cmd.exe" will launch the command prompt with the virtual file system specified in the Profiles folder present in the executable's directory. You can create a text file and put the path to it as the 3rd argument to pass arguments on to the launched executable as if they were just ammended to a typical Windows shortcut.
+would make the launched executable think that whatever is in the mods folder is actually under the Game folder. If the executable were a game and tried to make a save in the directory most games will save to by default, it will instead be redirected to "C:\saves".
 
 ## Building
 
