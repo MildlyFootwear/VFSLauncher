@@ -152,20 +152,6 @@ int main(int argc, char* argv[])
     {
 
         auto parameters = usvfsCreateParameters();
-        usvfsSetInstanceName(parameters, inname);
-        usvfsSetDebugMode(parameters, false);
-        usvfsSetLogLevel(parameters, LogLevel::Warning);
-        usvfsSetCrashDumpType(parameters, CrashDumpsType::None);
-        usvfsSetCrashDumpPath(parameters, "");
-        usvfsSetProcessDelay(parameters, 200);
-
-        usvfsInitLogging(false);
-        usvfsCreateVFS(parameters);
-
-        usvfsDisconnectVFS();
-        usvfsFreeParameters(parameters);
-
-        parameters = usvfsCreateParameters();
         printf("instance name %s\n", inname);
         usvfsSetInstanceName(parameters, inname);
         usvfsSetDebugMode(parameters, false);
@@ -247,7 +233,7 @@ int main(int argc, char* argv[])
         usvfsDisconnectVFS();
         usvfsFreeParameters(parameters);
         
-            printf("\nVFS ended.\n");
+        printf("\nVFS ended.\n");
         
         
     } else {
