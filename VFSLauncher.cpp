@@ -195,16 +195,16 @@ int main(int argc, char* argv[])
                 LPWSTR source      = ToW(pntsource);
                 LPWSTR destination = ToW(pntdest);
 
-                if (destination != NULL && source != NULL) {
+                if (destination != NULL && source != NULL) 
+                {
+
                     if (debug)
                         wprintf(L"Linking %ls and %ls\n", source, destination);
 
-                    usvfsVirtualLinkDirectoryStatic(source, destination,
-                                                    LINKFLAG_RECURSIVE);
-                    usvfsVirtualLinkDirectoryStatic(destination, source,
-                                                    LINKFLAG_MONITORCHANGES);
-                    usvfsVirtualLinkDirectoryStatic(source, destination,
-                                                    LINKFLAG_CREATETARGET);
+                    usvfsVirtualLinkDirectoryStatic(source, destination, LINKFLAG_RECURSIVE);
+                    usvfsVirtualLinkDirectoryStatic(destination, source, LINKFLAG_MONITORCHANGES);
+                    usvfsVirtualLinkDirectoryStatic(source, destination, LINKFLAG_CREATETARGET);
+
                 }
                 pntsource = strtok(NULL, sep);
             }
