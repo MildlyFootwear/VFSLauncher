@@ -223,6 +223,10 @@ int main(int argc, char* argv[])
 
                     Sleep(5000);
                     BOOL blank = usvfsGetVFSProcessList(&processcount, processids);
+                    if (processcount == 0) {
+                        Sleep(5000);
+                        usvfsGetVFSProcessList(&processcount, processids);
+                    }
                     printf("\n%Iu", processcount);
 
                 }
