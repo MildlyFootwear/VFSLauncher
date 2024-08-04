@@ -198,8 +198,8 @@ int main(int argc, char* argv[])
         
         fclose(profile); 
 
-            char tree[4096];
-            size_t fuck      = 4096;
+            char tree[16384];
+        size_t fuck      = 16384;
             size_t* treesize = &fuck;
             usvfsCreateVFSDump(tree, treesize);
             printf(tree);
@@ -214,12 +214,17 @@ int main(int argc, char* argv[])
 
             if (usvfsCreateProcessHooked(ToW(argv[2]), command, nullptr, nullptr, TRUE, 0, 0, nullptr, &si, &pi)) {
 
-                WaitForSingleObject(pi.hProcess, INFINITE);
+                //WaitForSingleObject(pi.hProcess, INFINITE);
 
-                DWORD exit = 99;
-                if (!GetExitCodeProcess(pi.hProcess, &exit)) {
-                    std::cerr << "process failed\n";
-                    error = true;
+                size_t processcount = 90000;
+                LPDWORD processids = new DWORD;
+                while (processcount != 0)
+                {
+
+                    Sleep(5000);
+                    BOOL blank = usvfsGetVFSProcessList(&processcount, processids);
+                    printf("\n%Iu", processcount);
+
                 }
 
                 CloseHandle(pi.hProcess);
@@ -243,7 +248,7 @@ int main(int argc, char* argv[])
     if (error || debug) {
         ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
         printf("\n");
-        Sleep(10000);
+        Sleep(2000);
     }
         
         
