@@ -227,7 +227,7 @@ int main(int argc, char* argv[])
                         Sleep(5000);
                         usvfsGetVFSProcessList(&processcount, processids);
                     }
-                    printf("\n%Iu", processcount);
+                    printf("\nProcess count: %Iu", processcount);
 
                 }
 
